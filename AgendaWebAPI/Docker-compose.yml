@@ -1,0 +1,44 @@
+version: "3.8"
+
+volumes: 
+    AgendaDb:
+
+networks:
+    mysql_agendaNET:
+    agendaNET:
+  
+services: 
+
+    mysql:
+        image: "mysql:latest"
+        container_name: mysql
+        ports:
+          - "3307:3306"
+
+        volumes:
+          - "Agenda:/var/lib/mysql"
+
+        networks: 
+          - mysqlNET
+
+        environment: 
+          - MYSQL_USER=root 
+          - MYSQL_PASSWORD=0366 
+          - MYSQL_ROOT_PASSWORD=0366 
+          - MYSQL_ROOT_HOST=%
+          - bind-address:0.0.0.0 
+
+    agendawebapi:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        container_name: agenda
+        networks: 
+          - mysql_agendaNET
+          - agendaNET
+        ports:
+          - 5000:80
+        environment: 
+          - DBHost=mysql
+        depends_on: 
+          - mysql
