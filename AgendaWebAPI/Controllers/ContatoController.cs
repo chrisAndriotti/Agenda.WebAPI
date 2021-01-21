@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AgendaWebAPI.Data;
+using AgendaWebAPI.Dtos;
 using AgendaWebAPI.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaWebAPI.Controllers
@@ -11,9 +14,12 @@ namespace AgendaWebAPI.Controllers
     {
         public readonly IRepository _repo;
 
-        public ContatoController(IRepository repository)
+        private readonly IMapper _mapper;
+
+        public ContatoController(IRepository repository, IMapper mapper)
         {
             _repo = repository;
+            _mapper = mapper;
         }
 
         // api/contato     [Retorna todos os contatos cadastrados]
@@ -24,7 +30,9 @@ namespace AgendaWebAPI.Controllers
 
             if (contatos == null) return BadRequest("Não há contatos cadastrados!");
 
-            return Ok(contatos);
+            var contatosMapped = _mapper.Map<IEnumerable<ContatoDto>>(contatos);
+            
+            return Ok(contatosMapped);
         }
 
         // api/contato/id     [Retorna um contato pelo ID]
@@ -35,7 +43,9 @@ namespace AgendaWebAPI.Controllers
 
             if (contato == null) return BadRequest("Contato não encontrado!");
 
-            return Ok(contato);
+            var contatoMapped = _mapper.Map<ContatoDto>(contato);
+
+            return Ok(contatoMapped);
         }
 
         // api/contato/byEvento/id     [Retorna todos os contatos pelo ID de um evento]
@@ -46,34 +56,42 @@ namespace AgendaWebAPI.Controllers
 
             if (contatos == null) return BadRequest("Não há contatos no evento escolhido!");
 
-            return Ok(contatos);
+            var contatosMapped = _mapper.Map<IEnumerable<ContatoDto>>(contatos);
+
+            return Ok(contatosMapped);
 
         }
 
         // api/contato/
         [HttpPost]
-        public IActionResult Post(Contato contato)
+        public IActionResult Post(ContatoRegistrarDto model)
         {
+            var contato = _mapper.Map<Contato>(model);
+
             _repo.Add(contato);
+
             if (_repo.SaveChanges())
             {
-                return Created($"/api/contato/{contato.Id}", contato);
+                return Created($"/api/contato/{contato.Id}", _mapper.Map<ContatoDto>(contato));
             }
 
             return BadRequest("Não foi possível cadastrar!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Contato contato)
+        public IActionResult Put(int id, ContatoRegistrarDto model)
         {
-            var dominio = _repo.GetContatoById(id, false);
+            var contato = _repo.GetContatoById(id, false);
+
             if (contato == null) return BadRequest("Contato não encontrado!");
         
+            _mapper.Map(model, contato);
+
             _repo.Update(contato);
 
             if (_repo.SaveChanges())
             {
-                return Ok($"Contato atualizado!");
+                return Created($"/api/contato/{model.Id}", _mapper.Map<ContatoDto>(contato));
             }
 
             return BadRequest("Contato não atualizado!");

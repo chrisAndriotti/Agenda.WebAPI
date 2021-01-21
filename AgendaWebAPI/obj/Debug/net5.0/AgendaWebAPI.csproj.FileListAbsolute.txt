@@ -45,3 +45,7 @@ C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\obj\Debug\net5.0\AgendaWeb
 C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\obj\Debug\net5.0\AgendaWebAPI.genruntimeconfig.cache
 C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\MySqlConnector.dll
 C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\andri\source\repos\AgendaWebAPI\AgendaWebAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

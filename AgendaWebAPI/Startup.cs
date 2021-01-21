@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using AgendaWebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using AutoMapper;
 
 namespace AgendaWebAPI
 {
@@ -31,18 +32,17 @@ namespace AgendaWebAPI
         {   
             string MySqlConnection = Configuration.GetConnectionString("MySqlConnection");
 
-            // services.AddDbContext<AgendaContext>(
-            //     context => context.UseMySql(MySqlConnection, ServerVersion.AutoDetect("MySqlConnection"))
-            // );
-
             services.AddDbContextPool<AgendaContext>( dbContextOptions => dbContextOptions
                     .UseMySql(MySqlConnection,
                             new MySqlServerVersion(new Version(8, 0, 21)),
                             mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend))); 
 
             services.AddScoped<IRepository, Repository>();
+
+            services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
-            services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AgendaWebAPI", Version = "v1" });
