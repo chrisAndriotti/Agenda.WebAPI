@@ -16,10 +16,10 @@ services:
           - "3307:3306"
 
         volumes:
-          - "Agenda:/var/lib/mysql"
+          - "AgendaDb:/var/lib/mysql"
 
         networks: 
-          - mysqlNET
+          - mysql_agendaNET
 
         environment: 
           - MYSQL_USER=root 
@@ -32,7 +32,7 @@ services:
         build: 
             context: .
             dockerfile: Dockerfile
-        container_name: agenda
+        container_name: agendawebapi
         networks: 
           - mysql_agendaNET
           - agendaNET

@@ -64,15 +64,16 @@ namespace AgendaWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id)
+        public IActionResult Put(int id, [FromBody] Contato contato)
         {
-            var contato = _repo.GetContatoById(id, false);
+            var dominio = _repo.GetContatoById(id, false);
             if (contato == null) return BadRequest("Contato não encontrado!");
-            
+        
             _repo.Update(contato);
+
             if (_repo.SaveChanges())
             {
-                return Created($"/api/contato/{contato.Id}", contato);
+                return Ok($"Contato atualizado!");
             }
 
             return BadRequest("Contato não atualizado!");

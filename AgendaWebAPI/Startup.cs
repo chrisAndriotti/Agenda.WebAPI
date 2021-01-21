@@ -35,7 +35,10 @@ namespace AgendaWebAPI
             //     context => context.UseMySql(MySqlConnection, ServerVersion.AutoDetect("MySqlConnection"))
             // );
 
-            services.AddDbContextPool<AgendaContext>( dbContextOptions => dbContextOptions.UseMySql(MySqlConnection, new MySqlServerVersion(new Version(8, 0, 21)), mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend))); 
+            services.AddDbContextPool<AgendaContext>( dbContextOptions => dbContextOptions
+                    .UseMySql(MySqlConnection,
+                            new MySqlServerVersion(new Version(8, 0, 21)),
+                            mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend))); 
 
             services.AddScoped<IRepository, Repository>();
             
